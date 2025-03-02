@@ -4,10 +4,14 @@
  * Plugin URI: https://yourwebsite.com
  * Description: Integrace Bricks Form s Ecomail API a licencováním SureCart.
  * Version: 1.0.0
+ * Requires at least: 5.6
+ * Tested up to: 6.5
+ * Requires PHP: 7.4
  * Author: Your Name
  * Author URI: https://yourwebsite.com
  * License: Proprietary
  * License URI: https://yourwebsite.com/license
+ * Text Domain: integrate-ecomail-bricks
  */
 
 if (!defined('ABSPATH')) {
