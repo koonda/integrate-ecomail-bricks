@@ -3,7 +3,7 @@
  * Plugin Name: Bricks Form - Ecomail Integration
  * Plugin URI: https://webypolopate.cz
  * Description: Propojte vaše Bricks formuláře s newslettrovou službou Ecomail rychle & jednoduše.
- * Version: 1.2.2
+ * Version: 1.2.3
  * Requires at least: 5.6
  * Tested up to: 6.7.2
  * Requires PHP: 7.4
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Definování konstant pro plugin
-define( 'BF_ECOMAIL_PLUGIN_VERSION', '1.2.2' );
+define( 'BF_ECOMAIL_PLUGIN_VERSION', '1.2.3' );
 define( 'BF_ECOMAIL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BF_ECOMAIL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BF_ECOMAIL_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );

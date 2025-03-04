@@ -4,7 +4,7 @@ Donate link: https://webypolopate.cz/
 Tags: bricks, ecomail, form, integration, newsletter
 Requires at least: 5.6
 Tested up to: 6.7.2
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 Requires PHP: 7.4
 License: Proprietary
 License URI: https://webypolopate.cz/produkty/propojeni-ecomail-pro-bricks-builder/
@@ -64,6 +64,9 @@ Seznamy jsou nyní ukládány do cache na 1 hodinu, což by mělo výrazně zryc
 
 == Changelog ==
 
+= 1.2.3 =
+* Drobné opravy a vylepšení
+
 = 1.2.2 =
 * Aktualizována kompatibilita s WordPress 6.7.2
 
@@ -91,6 +94,9 @@ Seznamy jsou nyní ukládány do cache na 1 hodinu, což by mělo výrazně zryc
 * Počáteční vydání s integrací pro Bricks Form, Ecomail API a licencování SureCart
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+Tato verze obsahuje drobné opravy a vylepšení.
 
 = 1.2.2 =
 Tato verze aktualizuje kompatibilitu s WordPress 6.7.2.

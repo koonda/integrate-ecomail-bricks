@@ -308,7 +308,7 @@ function bf_ecomail_license_tab() {
                 <li><?php esc_html_e('Přístup k aktualizacím pluginu', 'integrate-ecomail-bricks'); ?></li>
                 <li><?php esc_html_e('Přístup k technické podpoře', 'integrate-ecomail-bricks'); ?></li>
             </ul>
-            <p><?php esc_html_e('Pokud nemáte licen ční klíč, můžete jej zakoupit na', 'integrate-ecomail-bricks'); ?> <a href="https://webypolopate.cz" target="_blank">webypolopate.cz</a>.</p>
+            <p><?php esc_html_e('Pokud nemáte licenční klíč, můžete jej zakoupit na', 'integrate-ecomail-bricks'); ?> <a href="https://webypolopate.cz" target="_blank">webypolopate.cz</a>.</p>
         </div>
     </div>
     
@@ -538,7 +538,7 @@ function bf_ecomail_validate_api_key( $api_key ) {
         return '';
     }
 
-    $response = wp_remote_get( 'https:// api2.ecomailapp.cz/lists', array(
+    $response = wp_remote_get( 'https://api2.ecomailapp.cz/lists', array(
         'headers' => array(
             'key'          => $api_key,
             'Content-Type' => 'application/json',
