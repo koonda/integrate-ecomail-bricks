@@ -510,11 +510,11 @@ function bf_ecomail_process_custom_action( $form ) {
     
     // Získání dalších nastavení z formuláře
     $options = array(
-        'trigger_autoresponders' => isset($settings['ecomail_trigger_autoresponders']) ? (bool)$settings['ecomail_trigger_autoresponders'] : false,
-        'trigger_notification'   => isset($settings['ecomail_trigger_notification']) ? (bool)$settings['ecomail_trigger_notification'] : false,
-        'update_existing'        => isset($settings['ecomail_update_existing']) ? (bool)$settings['ecomail_update_existing'] : true,
-        'skip_confirmation'      => isset($settings['ecomail_skip_confirmation']) ? (bool)$settings['ecomail_skip_confirmation'] : true,
-        'resubscribe'            => isset($settings['ecomail_resubscribe']) ? (bool)$settings['ecomail_resubscribe'] : false,
+        'trigger_autoresponders' => isset($settings['ecomail_trigger_autoresponders']) && $settings['ecomail_trigger_autoresponders'] ? true : false,
+        'trigger_notification'   => isset($settings['ecomail_trigger_notification']) && $settings['ecomail_trigger_notification'] ? true : false,
+        'update_existing'        => isset($settings['ecomail_update_existing']) && $settings['ecomail_update_existing'] ? true : false,
+        'skip_confirmation'      => isset($settings['ecomail_skip_confirmation']) && $settings['ecomail_skip_confirmation'] ? true : false,
+        'resubscribe'            => isset($settings['ecomail_resubscribe']) && $settings['ecomail_resubscribe'] ? true : false,
     );
 
     // Logování dat pro debug
