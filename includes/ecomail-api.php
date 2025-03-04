@@ -1,4 +1,100 @@
-if ( is_wp_error( $response ) ) {
+<?php
+/**
+ * Ecomail API integrace
+ *
+ * Tento soubor obsahuje funkce pro komunikaci s Ecomail API.
+ *
+ * @package integrate-ecomail_bricks
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Zabránění přímému přístupu
+}
+
+/**
+ * Odeslání dat do Ecomail API pro přihlášení odběratele do listu.
+ *
+ * Předpokládá se, že data obsahují minimálně email a volitelně jméno a příjmení.
+ * Podle dokumentace se odesílají v rámci klíče "subscriber_data". Ostatní parametry
+ * (trigger_autoresponders, update_existing, atd.) lze dle potřeby upravit.
+ *
+ * @param array  $subscriber_data Data o odběrateli. Očekává se struktura:
+ *                                - email (povinné)
+ *                                - name (volitelné)
+ *                                - surname (volitelné)
+ *                                - další vlastní pole
+ * @param string $api_key         API klíč pro autentizaci.
+ * @param int    $list_id         ID listu, do kterého se má odběratel přidat.
+ * @param array  $options         Další možnosti pro API požadavek.
+ *
+ * @return array|WP_Error Vrací pole s výsledkem operace nebo objekt WP_Error v případě chyby.
+ */
+function bf_ecomail_send_data_to_ecomail( $subscriber_data, $api_key, $list_id, $options = array() ) {
+    // Kontrola povinných parametrů
+    if ( empty( $subscriber_data['email'] ) ) {
+        return new WP_Error( 'missing_email', __( 'Email je povinný.', 'integrate-ecomail-bricks' ) );
+    }
+    
+    if ( empty( $list_id ) ) {
+        return new WP_Error( 'missing_list_id', __( 'ID seznamu je povinné.', 'integrate-ecomail-bricks' ) );
+    }
+    
+    // Nastavení endpointu
+    $endpoint = sprintf( 'https://api2.ecomailapp.cz/lists/%d/subscribe', absint( $list_id ) );
+    
+    // Výchozí nastavení
+    $default_options = array(
+        'trigger_autoresponders' => false,
+        'trigger_notification'   => false,
+        'update_existing'        => true,
+        'skip_confirmation'      => true,
+        'resubscribe'            => false,
+    );
+    
+    // Sloučení výchozích a uživatelských nastavení
+    $options = wp_parse_args( $options, $default_options );
+    
+    // Příprava dat pro odeslání
+    $body = array(
+        'subscriber_data'        => $subscriber_data,
+        'trigger_autoresponders' => $options['trigger_autoresponders'],
+        'trigger_notification'   => $options['trigger_notification'],
+        'update_existing'        => $options['update_existing'],
+        'skip_confirmation'      => $options['skip_confirmation'],
+        'resubscribe'            => $options['resubscribe'],
+    );
+
+    $args = array(
+        'method'      => 'POST',
+        'headers'     => array(
+            'key'          => $api_key,
+            'Content-Type' => 'application/json',
+        ),
+        'body'        => wp_json_encode( $body ),
+        'timeout'     => 15,
+    );
+
+    // Logování požadavku v debug módu
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+        error_log( '[Bricks Form - Ecomail] Odesílání požadavku na: ' . $endpoint );
+        error_log( '[Bricks Form - Ecomail] Data: ' . wp_json_encode( $body ) );
+        
+        // Vytvoření podrobného debug souboru
+        if (function_exists('bf_ecomail_write_debug_file')) {
+            $debug_content = "=== ECOMAIL API REQUEST ===\n";
+            $debug_content .= "Endpoint: " . $endpoint . "\n";
+            $debug_content .= "Method: POST\n";
+            $debug_content .= "Headers: " . print_r($args['headers'], true) . "\n";
+            $debug_content .= "Body: " . print_r($body, true) . "\n\n";
+            
+            bf_ecomail_write_debug_file($debug_content);
+        }
+    }
+
+    $response = wp_remote_post( $endpoint, $args );
+
+    // Kontrola, zda nedošlo k chybě při komunikaci
+    if ( is_wp_error( $response ) ) {
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
             error_log( '[Bricks Form - Ecomail] Chyba komunikace: ' . $response->get_error_message() );
             
