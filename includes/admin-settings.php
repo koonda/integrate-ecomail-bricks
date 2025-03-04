@@ -129,7 +129,8 @@ function bf_ecomail_documentation_tab() {
             <ul>
                 <li><?php esc_html_e( 'V nastavení formuláře v sekci "Tagy" zadejte tagy oddělené čárkou', 'integrate-ecomail-bricks' ); ?></li>
                 <li><?php esc_html_e( 'Tagy pomáhají segmentovat vaše kontakty pro cílené kampaně', 'integrate-ecomail-bricks' ); ?></li>
-            </ul>
+             </ul>
+            <p><?php esc_html_e( 'Pozor: Tagy jsou case sensitive (rozlišují velká a malá písmena).', 'integrate-ecomail-bricks' ); ?></p>
         </div>
         
         <div class="bf-ecomail-doc-section">
@@ -307,7 +308,7 @@ function bf_ecomail_license_tab() {
                 <li><?php esc_html_e('Přístup k aktualizacím pluginu', 'integrate-ecomail-bricks'); ?></li>
                 <li><?php esc_html_e('Přístup k technické podpoře', 'integrate-ecomail-bricks'); ?></li>
             </ul>
-            <p><?php esc_html_e('Pokud nemáte licenční klíč, můžete jej zakoupit na', 'integrate-ecomail-bricks'); ?> <a href="https://webypolopate.cz" target="_blank">webypolopate.cz</a>.</p>
+            <p><?php esc_html_e('Pokud nemáte licen ční klíč, můžete jej zakoupit na', 'integrate-ecomail-bricks'); ?> <a href="https://webypolopate.cz" target="_blank">webypolopate.cz</a>.</p>
         </div>
     </div>
     
@@ -387,112 +388,6 @@ function bf_ecomail_license_tab() {
         }
     </style>
     <?php
-}
-
-/**
- * Aktivace licence
- *
- * @param string $license_key Licenční klíč
- * @return bool|WP_Error True při úspěchu, WP_Error při chybě
- */
-function bf_ecomail_activate_license($license_key) {
-    if (empty($license_key)) {
-        return new WP_Error('missing_license_key', esc_html__('Prosím zadejte licenční klíč.', 'integrate-ecomail-bricks'));
-    }
-    
-    // Uložení licenčního klíče
-    update_option('bf_ecomail_license_key', $license_key);
-    
-    // Příprava dat pro API požadavek
-    $api_params = array(
-        'edd_action' => 'activate_license',
-        'license'    => $license_key,
-        'item_name'  => urlencode('Bricks Form - Ecomail Integration'),
-        'url'        => home_url()
-    );
-    
-    // Odeslání požadavku na licenční server
-    $response = wp_remote_post('https://webypolopate.cz', array(
-        'timeout'   => 15,
-        'sslverify' => false,
-        'body'      => $api_params
-    ));
-    
-    // Kontrola odpovědi
-    if (is_wp_error($response)) {
-        return new WP_Error('api_error', $response->get_error_message());
-    }
-    
-    $license_data = json_decode(wp_remote_retrieve_body($response), true);
-    
-    // Simulace úspěšné aktivace (v reálném prostředí by toto bylo nahrazeno skutečnou kontrolou odpovědi)
-    $license_data = array(
-        'success'        => true,
-        'license'        => 'valid',
-        'item_name'      => 'Bricks Form - Ecomail Integration',
-        'expires'        => date('Y-m-d H:i:s', strtotime('+1 year')),
-        'customer_name'  => 'John Doe',
-        'customer_email' => 'john@example.com',
-        'status'         => 'valid'
-    );
-    
-    // Uložení dat licence
-    update_option('bf_ecomail_license_data', $license_data);
-    
-    return true;
-}
-
-/**
- * Deaktivace licence
- *
- * @return bool|WP_Error True při úspěchu, WP_Error při chybě
- */
-function bf_ecomail_deactivate_license() {
-    $license_key = get_option('bf_ecomail_license_key');
-    
-    if (empty($license_key)) {
-        return new WP_Error('missing_license_key', esc_html__('Licenční klíč není nastaven.', 'integrate-ecomail-bricks'));
-    }
-    
-    // Příprava dat pro API požadavek
-    $api_params = array(
-        'edd_action' => 'deactivate_license',
-        'license'    => $license_key,
-        'item_name'  => urlencode('Bricks Form - Ecomail Integration'),
-        'url'        => home_url()
-    );
-    
-    // Odeslání požadavku na licenční server
-    $response = wp_remote_post('https://webypolopate.cz', array(
-        'timeout'   => 15,
-        'sslverify' => false,
-        'body'      => $api_params
-    ));
-    
-    // Kontrola odpovědi
-    if (is_wp_error($response)) {
-        return new WP_Error('api_error', $response->get_error_message());
-    }
-    
-    // Vymazání dat licence
-    delete_option('bf_ecomail_license_data');
-    
-    return true;
-}
-
-/**
- * Kontrola platnosti licence
- *
- * @return bool True pokud je licence platná, jinak false
- */
-function bf_ecomail_is_license_valid() {
-    $license_data = get_option('bf_ecomail_license_data', array());
-    
-    if (empty($license_data) || empty($license_data['status'])) {
-        return false;
-    }
-    
-    return $license_data['status'] === 'valid';
 }
 
 /**

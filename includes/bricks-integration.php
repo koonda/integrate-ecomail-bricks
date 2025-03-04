@@ -22,6 +22,27 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Upravený seznam ovládacích prvků.
  */
 function bf_ecomail_add_custom_form_action( $controls ) {
+    // Kontrola, zda je licence platná
+    if (!function_exists('bf_ecomail_is_license_valid') || !bf_ecomail_is_license_valid()) {
+        // Pokud licence není platná, přidáme pouze základní akci bez dalších nastavení
+        $controls['actions']['options']['ecomail'] = esc_html__( 'Ecomail', 'integrate-ecomail-bricks' );
+        
+        // Přidání upozornění na neplatnou licenci
+        $controls['ecomail_license_notice'] = [
+            'tab'         => 'content',
+            'group'       => 'ecomail',
+            'label'       => esc_html__( 'Licence není aktivována', 'integrate-ecomail-bricks' ),
+            'type'        => 'info',
+            'description' => sprintf(
+                esc_html__( 'Pro plnou funkčnost je potřeba aktivovat licenci. %s', 'integrate-ecomail-bricks' ),
+                '<a href="' . admin_url( 'options-general.php?page=bf-ecomail-settings&tab=license' ) . '">' . esc_html__( 'Aktivovat licenci', 'integrate-ecomail-bricks' ) . '</a>'
+            ),
+            'required'    => ['actions', '=', 'ecomail'],
+        ];
+        
+        return $controls;
+    }
+    
     // Přidání naší vlastní akce do seznamu akcí
     $controls['actions']['options']['ecomail'] = esc_html__( 'Ecomail', 'integrate-ecomail-bricks' );
     
@@ -140,7 +161,7 @@ function bf_ecomail_add_custom_form_action( $controls ) {
         'group'       => 'ecomail',
         'label'       => esc_html__( 'Vlastní pole', 'integrate-ecomail-bricks' ),
         'type'        => 'textarea',
-        'description' => esc_html__( 'Zadejte vlastní pole ve formátu "nazev_pole_v_ecomail:form-field-id", každé pole na nový řádek', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Zadejte vlastní pole ve formátu "nazev_pole_v_ecomail:form-field-id", každé pole na nový řádek. Názvy polí jsou case sensitive (rozlišují velká a malá písmena).', 'integrate-ecomail-bricks' ),
         'placeholder' => "company:form-field-company\nwebsite:form-field-website",
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -151,7 +172,7 @@ function bf_ecomail_add_custom_form_action( $controls ) {
         'group'       => 'ecomail',
         'label'       => esc_html__( 'Tagy', 'integrate-ecomail-bricks' ),
         'type'        => 'textarea',
-        'description' => esc_html__( 'Zadejte tagy, které budou přiřazeny kontaktu, každý tag na nový řádek', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Zadejte tagy, které budou přiřazeny kontaktu, každý tag na nový řádek. Tagy jsou case sensitive (rozlišují velká a malá písmena).', 'integrate-ecomail-bricks' ),
         'placeholder' => "newsletter\nwebinar\npromo",
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -249,6 +270,16 @@ add_filter( 'bricks/elements/form/control_groups', 'bf_ecomail_add_control_group
  * @param Bricks\Form $form Objekt formuláře.
  */
 function bf_ecomail_process_custom_action( $form ) {
+    // Kontrola, zda je licence platná
+    if (!function_exists('bf_ecomail_is_license_valid') || !bf_ecomail_is_license_valid()) {
+        $form->set_result([
+            'action'  => 'ecomail',
+            'type'    => 'error',
+            'message' => esc_html__( 'Licence není aktivována. Pro plnou funkčnost aktivujte licenci v nastavení pluginu.', 'integrate-ecomail-bricks' ),
+        ]);
+        return;
+    }
+    
     // Získání nastavení formuláře a odeslaných polí
     $settings = $form->get_settings();
     $fields   = $form->get_fields();
@@ -453,18 +484,23 @@ function bf_ecomail_process_custom_action( $form ) {
     // Zpracování tagů
     if (!empty($settings['ecomail_tags'])) {
         $tags_text = $settings['ecomail_tags'];
-        $tags_lines = explode("\n", $tags_text);
-        $tags = array();
         
-        foreach ($tags_lines as $line) {
-            $tag = trim($line);
-            if (!empty($tag)) {
-                $tags[] = $tag;
-            }
+        // Nejprve zkontrolujeme, zda jsou tagy odděleny čárkami
+        if (strpos($tags_text, ',') !== false) {
+            // Pokud ano, rozdělíme je podle čárek
+            $tags_array = array_map('trim', explode(',', $tags_text));
+        } else {
+            // Jinak rozdělíme podle nových řádků
+            $tags_array = array_map('trim', explode("\n", $tags_text));
         }
         
+        // Odstraníme prázdné tagy
+        $tags = array_filter($tags_array, function($tag) {
+            return !empty($tag);
+        });
+        
         if (!empty($tags)) {
-            $subscriber_data['tags'] = $tags;
+            $subscriber_data['tags'] = array_values($tags); // Resetujeme indexy pole
             
             if ($debug_mode || (defined('WP_DEBUG') && WP_DEBUG)) {
                 bf_ecomail_log_debug("Přidány tagy: " . implode(', ', $tags));
