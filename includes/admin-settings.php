@@ -137,8 +137,8 @@ function bf_ecomail_documentation_tab() {
             <h3><?php esc_html_e( 'Další nastavení', 'integrate-ecomail-bricks' ); ?></h3>
             <p><?php esc_html_e( 'V nastavení formuláře můžete nakonfigurovat další možnosti:', 'integrate-ecomail-bricks' ); ?></p>
             <ul>
-                <li><?php esc_html_e( 'Spustit autoresponder - aktivuje automatické odpovědi po přihlášení', 'integrate-ecomail-bricks' ); ?></li>
-                <li><?php esc_html_e( 'Spustit notifikaci - odešle notifikaci o novém kontaktu', 'integrate-ecomail-bricks' ); ?></li>
+                <li><?php esc_html_e( 'Spustit automatizace - aktivuje automatické odpovědi po přihlášení', 'integrate-ecomail-bricks' ); ?></li>
+                <li><?php esc_html_e( 'Zapnout notifikace - odešle notifikaci o novém kontaktu', 'integrate-ecomail-bricks' ); ?></li>
                 <li><?php esc_html_e( 'Aktualizovat existující kontakt - aktualizuje údaje, pokud kontakt již existuje', 'integrate-ecomail-bricks' ); ?></li>
                 <li><?php esc_html_e( 'Přeskočit potvrzení - přeskočí potvrzovací email (double opt-in)', 'integrate-ecomail-bricks' ); ?></li>
                 <li><?php esc_html_e( 'Znovu přihlásit - znovu přihlásí kontakty, které se odhlásily', 'integrate-ecomail-bricks' ); ?></li>
@@ -538,7 +538,7 @@ function bf_ecomail_validate_api_key( $api_key ) {
         return '';
     }
 
-    $response = wp_remote_get( 'https://api2.ecomailapp.cz/lists', array(
+    $response = wp_remote_get( 'https:// api2.ecomailapp.cz/lists', array(
         'headers' => array(
             'key'          => $api_key,
             'Content-Type' => 'application/json',

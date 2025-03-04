@@ -22,27 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Upravený seznam ovládacích prvků.
  */
 function bf_ecomail_add_custom_form_action( $controls ) {
-    // Kontrola, zda je licence platná
-    if (!function_exists('bf_ecomail_is_license_valid') || !bf_ecomail_is_license_valid()) {
-        // Pokud licence není platná, přidáme pouze základní akci bez dalších nastavení
-        $controls['actions']['options']['ecomail'] = esc_html__( 'Ecomail', 'integrate-ecomail-bricks' );
-        
-        // Přidání upozornění na neplatnou licenci
-        $controls['ecomail_license_notice'] = [
-            'tab'         => 'content',
-            'group'       => 'ecomail',
-            'label'       => esc_html__( 'Licence není aktivována', 'integrate-ecomail-bricks' ),
-            'type'        => 'info',
-            'description' => sprintf(
-                esc_html__( 'Pro plnou funkčnost je potřeba aktivovat licenci. %s', 'integrate-ecomail-bricks' ),
-                '<a href="' . admin_url( 'options-general.php?page=bf-ecomail-settings&tab=license' ) . '">' . esc_html__( 'Aktivovat licenci', 'integrate-ecomail-bricks' ) . '</a>'
-            ),
-            'required'    => ['actions', '=', 'ecomail'],
-        ];
-        
-        return $controls;
-    }
-    
     // Přidání naší vlastní akce do seznamu akcí
     $controls['actions']['options']['ecomail'] = esc_html__( 'Ecomail', 'integrate-ecomail-bricks' );
     
@@ -161,7 +140,7 @@ function bf_ecomail_add_custom_form_action( $controls ) {
         'group'       => 'ecomail',
         'label'       => esc_html__( 'Vlastní pole', 'integrate-ecomail-bricks' ),
         'type'        => 'textarea',
-        'description' => esc_html__( 'Zadejte vlastní pole ve formátu "nazev_pole_v_ecomail:form-field-id", každé pole na nový řádek. Názvy polí jsou case sensitive (rozlišují velká a malá písmena).', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Zadejte vlastní pole ve formátu "nazev_pole_v_ecomail:form-field-id", každé pole na nový řádek', 'integrate-ecomail-bricks' ),
         'placeholder' => "company:form-field-company\nwebsite:form-field-website",
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -172,7 +151,7 @@ function bf_ecomail_add_custom_form_action( $controls ) {
         'group'       => 'ecomail',
         'label'       => esc_html__( 'Tagy', 'integrate-ecomail-bricks' ),
         'type'        => 'textarea',
-        'description' => esc_html__( 'Zadejte tagy, které budou přiřazeny kontaktu, každý tag na nový řádek. Tagy jsou case sensitive (rozlišují velká a malá písmena).', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Zadejte tagy, které budou přiřazeny kontaktu, každý tag na nový řádek', 'integrate-ecomail-bricks' ),
         'placeholder' => "newsletter\nwebinar\npromo",
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -181,9 +160,9 @@ function bf_ecomail_add_custom_form_action( $controls ) {
     $controls['ecomail_trigger_autoresponders'] = [
         'tab'         => 'content',
         'group'       => 'ecomail',
-        'label'       => esc_html__( 'Spustit autoresponder', 'integrate-ecomail-bricks' ),
+        'label'       => esc_html__( 'Spustit automatizace', 'integrate-ecomail-bricks' ),
         'type'        => 'checkbox',
-        'description' => esc_html__( 'Spustit automatické odpovědi po přihlášení', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Kontakt bude automaticky přidán do nastavených automatizací', 'integrate-ecomail-bricks' ),
         'default'     => false,
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -191,9 +170,9 @@ function bf_ecomail_add_custom_form_action( $controls ) {
     $controls['ecomail_trigger_notification'] = [
         'tab'         => 'content',
         'group'       => 'ecomail',
-        'label'       => esc_html__( 'Spustit notifikaci', 'integrate-ecomail-bricks' ),
+        'label'       => esc_html__( 'Zapnout notifikace', 'integrate-ecomail-bricks' ),
         'type'        => 'checkbox',
-        'description' => esc_html__( 'Odeslat notifikaci o novém kontaktu', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Ecomail vám odešle notifikaci o novém kontaktu. (Tuto funkcionalitu musíte mít zapnout v Ecomail: Nastavení seznamu > Upozornění)', 'integrate-ecomail-bricks' ),
         'default'     => false,
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -203,7 +182,7 @@ function bf_ecomail_add_custom_form_action( $controls ) {
         'group'       => 'ecomail',
         'label'       => esc_html__( 'Aktualizovat existující kontakt', 'integrate-ecomail-bricks' ),
         'type'        => 'checkbox',
-        'description' => esc_html__( 'Pokud kontakt již existuje, aktualizovat jeho údaje', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Pokud kontakt již existuje, budou aktualizovány jeho údaje', 'integrate-ecomail-bricks' ),
         'default'     => true,
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -211,9 +190,9 @@ function bf_ecomail_add_custom_form_action( $controls ) {
     $controls['ecomail_skip_confirmation'] = [
         'tab'         => 'content',
         'group'       => 'ecomail',
-        'label'       => esc_html__( 'Přeskočit potvrzení', 'integrate-ecomail-bricks' ),
+        'label'       => esc_html__( 'Přeskočit double opt-in', 'integrate-ecomail-bricks' ),
         'type'        => 'checkbox',
-        'description' => esc_html__( 'Přeskočit potvrzovací email (double opt-in)', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Přeskočit potvrzovací email (double opt-in) a kontakt bude přímo přihlášen k odběru. V opačném případě je nutné tuto funkcionalitu dáte nastavit v Ecomail Nastavení seznamu', 'integrate-ecomail-bricks' ),
         'default'     => true,
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -221,9 +200,9 @@ function bf_ecomail_add_custom_form_action( $controls ) {
     $controls['ecomail_resubscribe'] = [
         'tab'         => 'content',
         'group'       => 'ecomail',
-        'label'       => esc_html__( 'Znovu přihlásit', 'integrate-ecomail-bricks' ),
+        'label'       => esc_html__( 'Znovu přihlásit k odběru', 'integrate-ecomail-bricks' ),
         'type'        => 'checkbox',
-        'description' => esc_html__( 'Znovu přihlásit kontakty, které se odhlásily', 'integrate-ecomail-bricks' ),
+        'description' => esc_html__( 'Znovu přihlásí kontakt k odběru, pokud se v minulosti odhlásil', 'integrate-ecomail-bricks' ),
         'default'     => false,
         'required'    => ['actions', '=', 'ecomail'],
     ];
@@ -270,16 +249,6 @@ add_filter( 'bricks/elements/form/control_groups', 'bf_ecomail_add_control_group
  * @param Bricks\Form $form Objekt formuláře.
  */
 function bf_ecomail_process_custom_action( $form ) {
-    // Kontrola, zda je licence platná
-    if (!function_exists('bf_ecomail_is_license_valid') || !bf_ecomail_is_license_valid()) {
-        $form->set_result([
-            'action'  => 'ecomail',
-            'type'    => 'error',
-            'message' => esc_html__( 'Licence není aktivována. Pro plnou funkčnost aktivujte licenci v nastavení pluginu.', 'integrate-ecomail-bricks' ),
-        ]);
-        return;
-    }
-    
     // Získání nastavení formuláře a odeslaných polí
     $settings = $form->get_settings();
     $fields   = $form->get_fields();
@@ -484,23 +453,18 @@ function bf_ecomail_process_custom_action( $form ) {
     // Zpracování tagů
     if (!empty($settings['ecomail_tags'])) {
         $tags_text = $settings['ecomail_tags'];
+        $tags_lines = explode("\n", $tags_text);
+        $tags = array();
         
-        // Nejprve zkontrolujeme, zda jsou tagy odděleny čárkami
-        if (strpos($tags_text, ',') !== false) {
-            // Pokud ano, rozdělíme je podle čárek
-            $tags_array = array_map('trim', explode(',', $tags_text));
-        } else {
-            // Jinak rozdělíme podle nových řádků
-            $tags_array = array_map('trim', explode("\n", $tags_text));
+        foreach ($tags_lines as $line) {
+            $tag = trim($line);
+            if (!empty($tag)) {
+                $tags[] = $tag;
+            }
         }
         
-        // Odstraníme prázdné tagy
-        $tags = array_filter($tags_array, function($tag) {
-            return !empty($tag);
-        });
-        
         if (!empty($tags)) {
-            $subscriber_data['tags'] = array_values($tags); // Resetujeme indexy pole
+            $subscriber_data['tags'] = $tags;
             
             if ($debug_mode || (defined('WP_DEBUG') && WP_DEBUG)) {
                 bf_ecomail_log_debug("Přidány tagy: " . implode(', ', $tags));
@@ -510,11 +474,11 @@ function bf_ecomail_process_custom_action( $form ) {
     
     // Získání dalších nastavení z formuláře
     $options = array(
-        'trigger_autoresponders' => isset($settings['ecomail_trigger_autoresponders']) && $settings['ecomail_trigger_autoresponders'] ? true : false,
-        'trigger_notification'   => isset($settings['ecomail_trigger_notification']) && $settings['ecomail_trigger_notification'] ? true : false,
-        'update_existing'        => isset($settings['ecomail_update_existing']) && $settings['ecomail_update_existing'] ? true : false,
-        'skip_confirmation'      => isset($settings['ecomail_skip_confirmation']) && $settings['ecomail_skip_confirmation'] ? true : false,
-        'resubscribe'            => isset($settings['ecomail_resubscribe']) && $settings['ecomail_resubscribe'] ? true : false,
+        'trigger_autoresponders' => isset($settings['ecomail_trigger_autoresponders']) ? (bool)$settings['ecomail_trigger_autoresponders'] : false,
+        'trigger_notification'   => isset($settings['ecomail_trigger_notification']) ? (bool)$settings['ecomail_trigger_notification'] : false,
+        'update_existing'        => isset($settings['ecomail_update_existing']) ? (bool)$settings['ecomail_update_existing'] : true,
+        'skip_confirmation'      => isset($settings['ecomail_skip_confirmation']) ? (bool)$settings['ecomail_skip_confirmation'] : true,
+        'resubscribe'            => isset($settings['ecomail_resubscribe']) ? (bool)$settings['ecomail_resubscribe'] : false,
     );
 
     // Logování dat pro debug
@@ -552,10 +516,10 @@ function bf_ecomail_process_custom_action( $form ) {
             bf_ecomail_log_debug('Odpověď z Ecomail API: ' . print_r($result, true));
             bf_ecomail_log_debug('=== KONEC ZPRACOVÁNÍ FORMULÁŘE ===');
         }
+        // Použijeme výchozí zprávu formuláře místo vlastní
         $form->set_result([
             'action'  => 'ecomail',
             'type'    => 'success',
-            'message' => esc_html__( 'Data byla úspěšně odeslána do Ecomail.', 'integrate-ecomail-bricks' ),
         ]);
     }
 }

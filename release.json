@@ -3,13 +3,27 @@
   "slug": "integrate-ecomail-bricks",
   "author": "<a href='https://webypolopate.cz'>Adam Kotala</a>",
   "author_profile": "https://webypolopate.cz",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "requires": "5.6",
-  "tested": "6.5",
+  "tested": "6.7.2",
   "requires_php": "7.4",
   "sections": {
-    "description": "Tento plugin integruje Bricks Form s Ecomail API, což umožňuje odesílat data z formulářů přímo do Ecomail. Obsahuje také licenční funkcionalitu prostřednictvím SureCart pro správu a ochranu používání pluginu.",
-    "changelog": "<h4>1.2.1 - 2025-03-04</h4><ul><li>Opraveno zpracování boolean hodnot pro API - nyní jsou správně odesílány jako true/false</li><li>Vylepšeno zpracování tagů pro lepší kompatibilitu s Ecomail API</li></ul><h4>1.2.0 - 2025-03-04</h4><ul><li>Opraveno zpracování tagů - nyní podporuje tagy oddělené čárkou i na nových řádcích</li><li>Přidáno upozornění na case sensitivity tagů a vlastních polí</li><li>Vylepšeno zobrazení stavu licence</li><li>Přepracován licenční systém pro lepší kompatibilitu se SureCart API</li><li>Přidána kontrola platnosti licence při odesílání formuláře</li><li>Přidáno zobrazení data expirace licence</li></ul><h4>1.1.0 - 2025-03-02</h4><ul><li>Přidána podpora pro tagy - nyní můžete přiřadit tagy kontaktům při přihlášení</li><li>Opraveno zpracování polí formuláře - nyní jsou všechna pole správně odesílána do Ecomail</li><li>Upraveno mapování polí pro kompatibilitu s Ecomail API (firstname → name, lastname → surname)</li><li>Vylepšeno mapování polí formuláře pro lepší kompatibilitu s různými verzemi Bricks</li><li>Přidána podpora pro vlastní pole</li><li>Přidán debug mód pro snadnější řešení problémů</li><li>Přidána cache pro seznamy kontaktů pro zlepšení výkonu</li><li>Vylepšena dokumentace a uživatelské rozhraní</li><li>Upozornění o licenci se nyní zobrazuje pouze na stránkách nastavení pluginu</li></ul><h4>1.0.0 - 2025-02-15</h4><ul><li>Počáteční vydání s integrací pro Bricks Form, Ecomail API a licencování SureCart</li></ul>",
-    "frequently asked questions": "<h4>Jak nakonfiguruji plugin?</h4><p>Zadejte svůj Ecomail API klíč v nastavení pluginu a aktivujte licenci prostřednictvím stránky Nastavení licence v administraci WordPressu. Pro další pomoc se podívejte do dokumentace.</p><h4>Jak získám API klíč?</h4><p>API klíč najdete ve svém účtu Ecomail v sekci Nastavení > API.</p><h4>Jaká pole mohu mapovat?</h4><p>Můžete mapovat standardní pole jako email, jméno, příjmení, telefon, město a zemi. Navíc můžete přidat libovolná vlastní pole, která máte definována ve svém Ecomail účtu.</p><h4>Jak přidám tagy ke kontaktům?</h4><p>V nastavení formuláře v sekci \"Tagy\" zadejte tagy oddělené čárkou nebo každý tag na nový řádek. Tagy budou automaticky přiřazeny kontaktu při přihlášení.</p><h4>Proč se některá pole neodesílají do Ecomail?</h4><p>Zkontrolujte, zda jsou pole správně namapována. Zapněte debug mód v nastavení formuláře pro podrobné logování a zjištění problému.</p><h4>Proč se seznamy načítají pomalu?</h4><p>Seznamy jsou nyní ukládány do cache na 1 hodinu, což by mělo výrazně zrychlit načítání. Pokud potřebujete aktualizovat seznamy, použijte tlačítko \"Vymazat cache seznamů\" v nastavení pluginu.</p>"
-  }
+    "description": "Propojte vaše Bricks formuláře s newslettrovou službou Ecomail rychle & jednoduše.",
+    "changelog": "<h4>1.2.2 - 2025-03-10</h4><ul><li>Aktualizována kompatibilita s WordPress 6.7.2</li></ul><h4>1.2.1 - 2025-03-05</h4><ul><li>Vylepšeny popisy nastavení pro přepínače v nastavení formuláře</li><li>Odstraněna vlastní potvrzovací zpráva - nyní se používá výchozí zpráva nastavená ve formuláři</li><li>Opraveno zpracování přepínačů pro správné odesílání hodnot true/false do API</li><li>Přidán banner pluginu pro lepší vizuální identitu</li><li>Přidány standardní WordPress plugin assets pro repozitář</li></ul><h4>1.2.0 - 2025-03-04</h4><ul><li>Opraveno zpracování přepínačů pro správné odesílání hodnot true/false do API</li></ul><h4>1.1.0 - 2025-03-02</h4><ul><li>Přidána podpora pro tagy - nyní můžete přiřadit tagy kontaktům při přihlášení</li><li>Opraveno zpracování polí formuláře - nyní jsou všechna pole správně odesílána do Ecomail</li><li>Upraveno mapování polí pro kompatibilitu s Ecomail API (firstname → name, lastname → surname)</li><li>Vylepšeno mapování polí formuláře pro lepší kompatibilitu s různými verzemi Bricks</li><li>Přidána podpora pro vlastní pole</li><li>Přidán debug mód pro snadnější řešení problémů</li><li>Přidána cache pro seznamy kontaktů pro zlepšení výkonu</li><li>Vylepšena dokumentace a uživatelské rozhraní</li><li>Upozornění o licenci se nyní zobrazuje pouze na stránkách nastavení pluginu</li></ul><h4>1.0.0 - 2025-02-15</h4><ul><li>Počáteční vydání s integrací pro Bricks Form, Ecomail API a licencování SureCart</li></ul>",
+    "frequently asked questions": "<h4>Jak nakonfiguruji plugin?</h4><p>Zadejte svůj Ecomail API klíč v nastavení pluginu a aktivujte licenci prostřednictvím stránky Nastavení licence v administraci WordPressu. Pro další pomoc se podívejte do dokumentace.</p><h4>Jak získám API klíč?</h4><p>API klíč najdete ve svém účtu Ecomail v sekci Nastavení > API.</p><h4>Jaká pole mohu mapovat?</h4><p>Můžete mapovat standardní pole jako email, jméno, příjmení, telefon, město a zemi. Navíc můžete přidat libovolná vlastní pole, která máte definována ve svém Ecomail účtu.</p><h4>Jak přidám tagy ke kontaktům?</h4><p>V nastavení formuláře v sekci \"Tagy\" zadejte každý tag na nový řádek. Tagy budou automaticky přiřazeny kontaktu při přihlášení.</p><h4>Proč se některá pole neodesílají do Ecomail?</h4><p>Zkontrolujte, zda jsou pole správně namapována. Zapněte debug mód v nastavení formuláře pro podrobné logování a zjištění problému.</p><h4>Proč se seznamy načítají pomalu?</h4><p>Seznamy jsou nyní ukládány do cache na 1 hodinu, což by mělo výrazně zrychlit načítání. Pokud potřebujete aktualizovat seznamy, použijte tlačítko \"Vymazat cache seznamů\" v nastavení pluginu.</p>"
+  },
+  "banners": {
+    "low": "https://ps.w.org/integrate-ecomail-bricks/assets/banner-772x250.jpg",
+    "high": "https://ps.w.org/integrate-ecomail-bricks/assets/banner-1544x500.jpg"
+  },
+  "icons": {
+    "1x": "https://ps.w.org/integrate-ecomail-bricks/assets/icon-128x128.png",
+    "2x": "https://ps.w.org/integrate-ecomail-bricks/assets/icon-256x256.png"
+  },
+  "screenshots": [
+    "https://ps.w.org/integrate-ecomail-bricks/assets/screenshot-1.png",
+    "https://ps.w.org/integrate-ecomail-bricks/assets/screenshot-2.png",
+    "https://ps.w.org/integrate-ecomail-bricks/assets/screenshot-3.png",
+    "https://ps.w.org/integrate-ecomail-bricks/assets/screenshot-4.png"
+  ]
 }
